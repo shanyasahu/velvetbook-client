@@ -225,15 +225,13 @@ linear-gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
                     {/* Logo Section - Animating concurrently with the background */}
                     <div className="relative flex flex-col items-center">
 
-                        {/* Logo Wrapper with Fade In/Out */}
+                        {/* Logo Wrapper with Pure Fade Effect */}
                         <motion.div
                             initial={{
                                 opacity: 0,
-                                y: 50, // Keeps the vertical entrance movement
                             }}
                             animate={{
                                 opacity: 1,
-                                y: 0,
                             }}
                             exit={{
                                 opacity: 0,
