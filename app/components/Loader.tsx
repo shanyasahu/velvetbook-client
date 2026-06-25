@@ -1,9 +1,25 @@
-
 "use client";
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import {
+    Scissors,
+    Sparkles,
+    Flower,
+    Droplets,
+    Star,
+    Heart,
+    Crown,
+    Gem,
+    Wind,
+    Moon,
+    Feather,
+    Sun,
+    Brush,
+    Eye,
+    Flame
+} from "lucide-react";
 
 type LuxuryLoaderProps = {
     duration?: number;
@@ -15,14 +31,31 @@ interface Particle {
     top: number;
     size: number;
     duration: number;
-    delay: number;
 }
 
+// Removed delay properties to ensure everything is visible immediately
+const backgroundIcons = [
+    { icon: Scissors, top: "12%", left: "8%", duration: 15 },
+    { icon: Flower, top: "25%", left: "75%", duration: 18 },
+    { icon: Sparkles, top: "45%", left: "10%", duration: 12 },
+    { icon: Droplets, top: "60%", left: "82%", duration: 20 },
+    { icon: Flame, top: "80%", left: "15%", duration: 16 },
+    { icon: Sun, top: "15%", left: "60%", duration: 14 },
+    { icon: Feather, top: "35%", left: "25%", duration: 19 },
+    { icon: Eye, top: "75%", left: "65%", duration: 17 },
+    { icon: Crown, top: "50%", left: "55%", duration: 21 },
+    { icon: Heart, top: "85%", left: "45%", duration: 13 },
+    { icon: Brush, top: "8%", left: "35%", duration: 16 },
+    { icon: Moon, top: "55%", left: "20%", duration: 15 },
+    { icon: Gem, top: "88%", left: "75%", duration: 18 },
+    { icon: Wind, top: "30%", left: "45%", duration: 14 },
+    { icon: Star, top: "68%", left: "5%", duration: 22 },
+];
+
 export default function Loader({
-    duration = 2600,
+    duration = 4000, // Reverted to a slightly shorter duration
 }: LuxuryLoaderProps) {
     const [visible, setVisible] = useState(true);
-    // Initialize as an empty array to match the Server Render perfectly
     const [particles, setParticles] = useState<Particle[]>([]);
 
     useEffect(() => {
@@ -31,14 +64,12 @@ export default function Loader({
     }, [duration]);
 
     useEffect(() => {
-        // Generate the randomized math safely ONLY on the client after mount
         const generatedParticles = Array.from({ length: 28 }, (_, i) => ({
             id: i,
             left: Math.random() * 100,
             top: Math.random() * 100,
             size: Math.random() * 5 + 2,
             duration: Math.random() * 8 + 6,
-            delay: Math.random() * 4,
         }));
         setParticles(generatedParticles);
     }, []);
@@ -61,7 +92,7 @@ export default function Loader({
                         background: "var(--bg-primary)",
                     }}
                 >
-                    {/* Animated Background */}
+                    {/* Animated Background Gradients */}
                     <motion.div
                         className="absolute inset-0"
                         animate={{
@@ -75,17 +106,17 @@ export default function Loader({
                         }}
                         style={{
                             background: `
-radial - gradient(circle at 50 % 50 %,
+radial-gradient(circle at 50% 50%,
     rgba(193, 154, 107, .18),
-    transparent 35 %),
+    transparent 35%),
 
-    radial - gradient(circle at 20 % 20 %,
+    radial-gradient(circle at 20% 20%,
         rgba(160, 70, 255, .12),
-        transparent 40 %),
+        transparent 40%),
 
-    radial - gradient(circle at 80 % 80 %,
+    radial-gradient(circle at 80% 80%,
         rgba(193, 154, 107, .08),
-        transparent 40 %)
+        transparent 40%)
         `,
                         }}
                     />
@@ -95,14 +126,43 @@ radial - gradient(circle at 50 % 50 %,
                         className="absolute inset-0 opacity-[0.05]"
                         style={{
                             backgroundImage: `
-linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
-    linear - gradient(90deg, rgba(255, 255, 255, .12) 1px, transparent 1px)
+linear-gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .12) 1px, transparent 1px)
         `,
                             backgroundSize: "70px 70px",
                         }}
                     />
 
-                    {/* Floating Particles */}
+                    {/* Floating Background Icons */}
+                    {backgroundIcons.map((item, idx) => {
+                        const IconComponent = item.icon;
+                        return (
+                            <motion.div
+                                key={idx}
+                                className="absolute pointer-events-none select-none z-10" // Added z-10
+                                style={{
+                                    top: item.top,
+                                    left: item.left,
+                                    color: "var(--brand-gold)", // Ensure this is a valid color
+                                    opacity: 0.4, // Increased from 0.06 to 0.4 for better visibility
+                                }}
+                                animate={{
+                                    y: [0, -35, 0],
+                                    x: [0, 15, 0],
+                                    rotate: [0, 20, -10, 0],
+                                }}
+                                transition={{
+                                    repeat: Infinity,
+                                    duration: item.duration,
+                                    ease: "easeInOut",
+                                }}
+                            >
+                                <IconComponent size={20} strokeWidth={2} /> {/* Increased strokeWidth */}
+                            </motion.div>
+                        );
+                    })}
+
+                    {/* Floating Particles - Instant start */}
                     {particles.map((p) => (
                         <motion.span
                             key={p.id}
@@ -110,21 +170,19 @@ linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
                             style={{
                                 width: p.size,
                                 height: p.size,
-                                left: `${p.left}% `,
-                                top: `${p.top}% `,
+                                left: `${p.left}%`,
+                                top: `${p.top}%`,
                                 background: "var(--brand-gold)",
                                 filter: "blur(.4px)",
-                                opacity: 0.6,
+                                opacity: 0.5,
                             }}
                             animate={{
                                 y: [-20, 20, -20],
-                                opacity: [0, 0.9, 0],
-                                scale: [0.5, 1.2, 0.5],
+                                scale: [0.8, 1.2, 0.8],
                             }}
                             transition={{
                                 repeat: Infinity,
                                 duration: p.duration,
-                                delay: p.delay,
                                 ease: "easeInOut",
                             }}
                         />
@@ -164,7 +222,7 @@ linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
                         }}
                     />
 
-                    {/* Logo Section */}
+                    {/* Logo Section - Animating concurrently with the background */}
                     <div className="relative flex flex-col items-center">
 
                         {/* Logo */}
@@ -232,6 +290,7 @@ linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
                                         repeatDelay: 1,
                                         duration: 1.4,
                                         ease: "easeInOut",
+                                        delay: 1,
                                     }}
                                 />
                             </motion.div>
@@ -393,11 +452,11 @@ linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
 
                         {/* Loading Bar */}
                         <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: 220 }}
+                            initial={{ width: 0, opacity: 0 }}
+                            animate={{ width: 220, opacity: 1 }}
                             transition={{
-                                duration: duration / 1000,
-                                ease: "linear",
+                                delay: 1.2,
+                                duration: 0.4,
                             }}
                             className="relative mt-10 h-[3px] rounded-full overflow-hidden"
                             style={{
@@ -417,7 +476,8 @@ linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
                                     width: "100%",
                                 }}
                                 transition={{
-                                    duration: duration / 1000,
+                                    delay: 1.2,
+                                    duration: (duration / 1000) - 1.2,
                                     ease: "linear",
                                 }}
                             />
@@ -439,26 +499,9 @@ linear - gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
                                 }}
                             />
                         </motion.div>
-
-                        {/* Loading Text */}
-                        {/* <motion.p
-                            className="mt-5 text-[8px] tracking-[0.35em] uppercase"
-                            style={{
-                                color: "var(--text-secondary)",
-                            }}
-                            animate={{
-                                opacity: [0.5, 1, 0.5],
-                            }}
-                            transition={{
-                                repeat: Infinity,
-                                duration: 1.5,
-                            }}
-                        >
-                            Preparing your luxury experience
-                        </motion.p> */}
                     </div>
 
-                    {/* Corner Glow */}
+                    {/* Corner Glows */}
                     <motion.div
                         className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-[120px]"
                         style={{
