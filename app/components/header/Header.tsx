@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Bell, ChevronDown } from "lucide-react";
+import { Bell, ChevronDown, Sparkle } from "lucide-react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { usePathname } from "next/navigation";
@@ -25,17 +25,73 @@ export function Header() {
             <div className="flex items-center justify-between">
                 <div className="flex min-w-0 items-center">
                     <Image
-                        src="/logo.png"
+                        src="/vb-logo.png"
                         alt="Velvetbook"
-                        width={48}
-                        height={48}
+                        width={100}
+                        height={100}
                         priority
-                        className="h-10 w-10 shrink-0 sm:h-12 sm:w-12"
+                        className="h-14 w-14 object-contain sm:h-12 sm:w-12"
                     />
 
-                    <h1 className="hidden min-[331px]:block brand-logo text-[18px] font-semibold leading-none tracking-[0.02em] text-(--brand-gold)">
+                    {/* <h1 className="hidden min-[331px]:block brand-logo text-[18px] font-semibold leading-none tracking-[0.02em] text-(--brand-gold)">
                         VELVETBOOK
-                    </h1>
+                    </h1> */}
+
+
+                    <div className="flex flex-col items-center">
+                        <h1
+                            className="text-lg font-semibold tracking-[4px]"
+                            style={{
+                                color: "var(--logo-text)",
+                            }}                >
+                            VELVET
+                            <span
+                                style={{
+                                    color: "var(--brand-gold)",
+                                }}
+                            >
+                                BOOK
+                            </span>
+                        </h1>
+
+
+                        {/* Gold Divider */}
+                        <div className="flex items-center justify-center">
+                            <div className="h-px w-18 bg-[var(--brand-gold-light)]" />
+
+                            <div className="relative flex items-center justify-center">
+                                <div
+                                    className="absolute h-8 w-8 rounded-full blur-md"
+                                    style={{
+                                        background: "var(--brand-gold)",
+                                        opacity: 0.15,
+                                    }}
+                                />
+
+                                <Sparkle
+                                    size={6}
+                                    style={{
+                                        color: "var(--brand-gold)",
+                                    }}
+                                />
+                            </div>
+
+                            <div className="h-px w-18 bg-[var(--brand-gold-light)]" />
+                        </div>
+
+                        <div className="flex items-center gap-1 text-[6.5px] tracking-[0.4em] uppercase font-semibold">
+                            <span style={{ color: "var(--text-primary)" }}>Beauty</span>
+
+                            <span style={{ color: "var(--brand-gold)" }} className="text-md">•</span>
+
+                            <span style={{ color: "var(--text-primary)" }}>Wellness</span>
+
+                            <span style={{ color: "var(--brand-gold)" }} className="text-md">•</span>
+
+                            <span style={{ color: "var(--text-primary)" }}>Yours</span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div className="flex items-center gap-2">
