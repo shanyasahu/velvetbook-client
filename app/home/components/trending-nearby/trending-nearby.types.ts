@@ -32,4 +32,5 @@ export interface DesktopService {
   label: string;
 
   price: string;
+  image: string;
 }

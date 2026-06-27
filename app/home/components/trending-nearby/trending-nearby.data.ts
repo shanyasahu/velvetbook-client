@@ -16,10 +16,26 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
       "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
     desktopService: "Swedish Massage",
     desktopServices: [
-      { label: "Hairs", price: "$80" },
-      { label: "Deep Tissue", price: "$20" },
-      { label: "Flexible", price: "$10" },
-      { label: "Aromatherapy", price: "$25" },
+      {
+        label: "Hair Spa",
+        price: "$80",
+        image: "/massage.webp",
+      },
+      {
+        label: "Deep Tissue",
+        price: "$20",
+        image: "/massage.webp",
+      },
+      {
+        label: "Flexible",
+        price: "$10",
+        image: "/massage.webp",
+      },
+      {
+        label: "Aromatherapy",
+        price: "$25",
+        image: "/massage.webp",
+      },
     ],
   },
   {
@@ -37,10 +53,26 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
       "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
     desktopService: "Swedish Massage",
     desktopServices: [
-      { label: "Hairs", price: "$80" },
-      { label: "Deep Tissue", price: "$20" },
-      { label: "Flexible", price: "$10" },
-      { label: "Aromatherapy", price: "$25" },
+      {
+        label: "Hair Spa",
+        price: "$80",
+        image: "/massage.webp",
+      },
+      {
+        label: "Deep Tissue",
+        price: "$20",
+        image: "/massage.webp",
+      },
+      {
+        label: "Flexible",
+        price: "$10",
+        image: "/massage.webp",
+      },
+      {
+        label: "Aromatherapy",
+        price: "$25",
+        image: "/massage.webp",
+      },
     ],
   },
   {
@@ -58,10 +90,26 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
       "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
     desktopService: "Swedish Massage",
     desktopServices: [
-      { label: "Hairs", price: "$80" },
-      { label: "Deep Tissue", price: "$20" },
-      { label: "Flexible", price: "$10" },
-      { label: "Aromatherapy", price: "$25" },
+      {
+        label: "Hair Spa",
+        price: "$80",
+        image: "/massage.webp",
+      },
+      {
+        label: "Deep Tissue",
+        price: "$20",
+        image: "/massage.webp",
+      },
+      {
+        label: "Flexible",
+        price: "$10",
+        image: "/massage.webp",
+      },
+      {
+        label: "Aromatherapy",
+        price: "$25",
+        image: "/massage.webp",
+      },
     ],
   },
   {
@@ -79,10 +127,26 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
       "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
     desktopService: "Swedish Massage",
     desktopServices: [
-      { label: "Hairs", price: "$80" },
-      { label: "Deep Tissue", price: "$20" },
-      { label: "Flexible", price: "$10" },
-      { label: "Aromatherapy", price: "$25" },
+      {
+        label: "Hair Spa",
+        price: "$80",
+        image: "/massage.webp",
+      },
+      {
+        label: "Deep Tissue",
+        price: "$20",
+        image: "/massage.webp",
+      },
+      {
+        label: "Flexible",
+        price: "$10",
+        image: "/massage.webp",
+      },
+      {
+        label: "Aromatherapy",
+        price: "$25",
+        image: "/massage.webp",
+      },
     ],
   },
   {
@@ -100,10 +164,26 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
       "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
     desktopService: "Swedish Massage",
     desktopServices: [
-      { label: "Hairs", price: "$80" },
-      { label: "Deep Tissue", price: "$20" },
-      { label: "Flexible", price: "$10" },
-      { label: "Aromatherapy", price: "$25" },
+      {
+        label: "Hair Spa",
+        price: "$80",
+        image: "/massage.webp",
+      },
+      {
+        label: "Deep Tissue",
+        price: "$20",
+        image: "/massage.webp",
+      },
+      {
+        label: "Flexible",
+        price: "$10",
+        image: "/massage.webp",
+      },
+      {
+        label: "Aromatherapy",
+        price: "$25",
+        image: "/massage.webp",
+      },
     ],
   },
 ];

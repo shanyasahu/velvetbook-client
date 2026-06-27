@@ -44,7 +44,7 @@ export function Header() {
 
                     <div className="flex flex-col items-center lg:items-start">
                         <h1
-                            className="text-lg font-semibold tracking-[4px] lg:text-[24px] lg:tracking-normal"
+                            className="text-lg font-semibold tracking-[4px] lg:text-[24px] leading-[24px]"
                             style={{
                                 color: "var(--logo-text)",
                             }}                >
@@ -60,8 +60,8 @@ export function Header() {
 
 
                         {/* Gold Divider */}
-                        <div className="flex items-center justify-center lg:hidden">
-                            <div className="h-px w-18 bg-[var(--brand-gold-light)]" />
+                        <div className="flex items-center justify-center">
+                            <div className="h-[0.5px] w-18 lg:w-23 bg-[var(--brand-gold-light)]" />
 
                             <div className="relative flex items-center justify-center">
                                 <div
@@ -80,10 +80,10 @@ export function Header() {
                                 />
                             </div>
 
-                            <div className="h-px w-18 bg-[var(--brand-gold-light)]" />
+                            <div className="h-[0.5px] w-18 lg:w-23 bg-[var(--brand-gold-light)]" />
                         </div>
 
-                        <div className="flex items-center gap-1 text-[6.5px] tracking-[0.4em] uppercase font-semibold lg:hidden">
+                        <div className="flex items-center gap-1 text-[6.5px] lg:text-[8.5px] tracking-[0.4em] uppercase font-semibold">
                             <span style={{ color: "var(--text-primary)" }}>Beauty</span>
 
                             <span style={{ color: "var(--brand-gold)" }} className="text-md">•</span>

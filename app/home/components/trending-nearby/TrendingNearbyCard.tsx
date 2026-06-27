@@ -286,72 +286,77 @@ export function TrendingNearbyCard({ item }: TrendingNearbyCardProps) {
 
                     <div className="grid grid-cols-5 gap-2">
 
-                        {(item.desktopServices ?? []).map((service, index) => {
-
-                            const Icon = icons[index] ?? Sparkles;
-
-                            return (
-
-                                <div
-                                    key={service.label}
-                                    className="
-                            rounded-sm
-                            border
-                            border-(--border)
-                            bg-(--bg-secondary)
-                            p-2
-                            text-center
-                            transition-all
-                            duration-300
-                            hover:border-(--accent-primary)
-                            hover:shadow-md
-                        "
-                                >
-
-                                    <Icon
-                                        size={16}
-                                        className="mx-auto text-(--accent-primary)"
+                        {(item.desktopServices ?? []).map((service) => (
+                            <div
+                                key={service.label}
+                                className="
+      overflow-hidden
+      rounded-sm
+      border
+      border-(--border)
+      bg-(--bg-secondary)
+      transition-all
+      duration-300
+      hover:-translate-y-1
+      hover:border-(--accent-primary)
+      hover:shadow-lg
+    "
+                            >
+                                <div className="relative h-[60px] w-full overflow-hidden">
+                                    <Image
+                                        src={service.image}
+                                        alt={service.label}
+                                        fill
+                                        className="object-cover transition duration-500 hover:scale-110"
                                     />
+                                </div>
 
-                                    <p className="mt-2 line-clamp-1 text-[10px] font-medium text-(--text-primary)">
+                                <div className="p-1 text-center">
+                                    <p className="line-clamp-1 text-[11px] font-medium text-(--text-primary)">
                                         {service.label}
                                     </p>
 
-                                    <span className="mt-1 block text-[11px] font-semibold text-(--accent-primary)">
+                                    <span className="block text-[12px] font-semibold text-(--accent-primary)">
                                         {service.price}
                                     </span>
-
                                 </div>
-
-                            );
-
-                        })}
+                            </div>
+                        ))}
 
                         <button
                             className="
-                    flex
-                    flex-col
-                    items-center
-                    justify-center
-                    rounded-sm
-                    border
-                    border-dashed
-                    border-(--border)
-                    bg-(--bg-secondary)
-                    transition-all
-                    hover:border-(--accent-primary)
-                "
+    flex
+    flex-col
+    overflow-hidden
+    rounded-sm
+    border
+    border-dashed
+    border-(--border)
+    bg-(--bg-secondary)
+    transition-all
+    hover:border-(--accent-primary)
+    hover:shadow-lg
+  "
                         >
+                            <div className="relative h-[60px] w-full overflow-hidden">
+                                <Image
+                                    src="/massage.webp"
+                                    alt="more"
+                                    fill
+                                    className="object-cover transition duration-500 hover:scale-110"
+                                />
+                            </div>
 
-                            <Plus
-                                size={18}
-                                className="text-(--accent-primary)"
-                            />
 
-                            <span className="mt-1 text-[10px] font-medium">
-                                More
-                            </span>
 
+                            <div className="p-1">
+                                <div className="flex items-center justify-center">
+                                    <Plus size={12} className="text-(--accent-primary)" />
+                                </div>
+                                <span className="text-[11px] font-medium">
+                                    More
+                                </span>
+                            </div>
                         </button>
 
                     </div>
