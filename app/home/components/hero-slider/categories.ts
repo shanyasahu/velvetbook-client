@@ -6,6 +6,7 @@ import {
   HandMetal,
   PenTool,
   Scissors,
+  WandSparkles,
 } from "lucide-react";
 
 export const categories = [
@@ -15,5 +16,6 @@ export const categories = [
   { label: "Massage", icon: Hand },
   { label: "Tattoo", icon: PenTool },
   { label: "Nails", icon: HandMetal },
+  { label: "Makeup", icon: WandSparkles, desktopOnly: true },
   { label: "More", icon: LayoutGrid },
 ];

@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* IE/Old Edge */
+body {
+  -ms-overflow-style: none;
+}
+
 .search-glass {
   background: var(--search-bg);
   border-color: var(--search-border);
@@ -132,6 +144,31 @@
     0 0 16px color-mix(in srgb,
       var(--accent-glow) 25%,
       transparent);
+}
+
+@media (min-width: 1024px) {
+  .hero-slider .swiper-pagination {
+    bottom: 48px !important;
+    left: 96px !important;
+  }
+
+  .hero-slider .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: var(--pagination-dot);
+  }
+
+  .hero-slider .swiper-pagination-bullet-active {
+    background: var(--pagination-active);
+  }
+
+  .trending-swiper {
+    padding-bottom: 0 !important;
+  }
+
+  .trending-swiper .swiper-pagination {
+    display: none;
+  }
 }
 
 .auth-background {

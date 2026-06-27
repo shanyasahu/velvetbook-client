@@ -10,6 +10,17 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
     availability: "9AM - 6PM",
     distance: "1.2km away",
     organizationId: "store-1",
+    rating: 4.8,
+    reviews: "120+",
+    description:
+      "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
+    desktopService: "Swedish Massage",
+    desktopServices: [
+      { label: "Hairs", price: "$80" },
+      { label: "Deep Tissue", price: "$20" },
+      { label: "Flexible", price: "$10" },
+      { label: "Aromatherapy", price: "$25" },
+    ],
   },
   {
     id: "2",
@@ -20,6 +31,17 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
     availability: "9AM - 5PM",
     distance: "1.2km away",
     organizationId: "org-trending-2",
+    rating: 4.8,
+    reviews: "120+",
+    description:
+      "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
+    desktopService: "Swedish Massage",
+    desktopServices: [
+      { label: "Hairs", price: "$80" },
+      { label: "Deep Tissue", price: "$20" },
+      { label: "Flexible", price: "$10" },
+      { label: "Aromatherapy", price: "$25" },
+    ],
   },
   {
     id: "3",
@@ -30,6 +52,17 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
     availability: "9AM - 6PM",
     distance: "1.2km away",
     organizationId: "store-1",
+    rating: 4.8,
+    reviews: "120+",
+    description:
+      "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
+    desktopService: "Swedish Massage",
+    desktopServices: [
+      { label: "Hairs", price: "$80" },
+      { label: "Deep Tissue", price: "$20" },
+      { label: "Flexible", price: "$10" },
+      { label: "Aromatherapy", price: "$25" },
+    ],
   },
   {
     id: "4",
@@ -40,6 +73,17 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
     availability: "9AM - 6PM",
     distance: "1.2km away",
     organizationId: "store-3",
+    rating: 4.8,
+    reviews: "120+",
+    description:
+      "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
+    desktopService: "Swedish Massage",
+    desktopServices: [
+      { label: "Hairs", price: "$80" },
+      { label: "Deep Tissue", price: "$20" },
+      { label: "Flexible", price: "$10" },
+      { label: "Aromatherapy", price: "$25" },
+    ],
   },
   {
     id: "5",
@@ -50,5 +94,16 @@ export const trendingNearbyData: TrendingNearbyItem[] = [
     availability: "9AM - 6PM",
     distance: "1.2km away",
     organizationId: "store-2",
+    rating: 4.8,
+    reviews: "120+",
+    description:
+      "Premium wellness & healing center offering therapeutic massages and holistic treatments tailored to your body's needs.",
+    desktopService: "Swedish Massage",
+    desktopServices: [
+      { label: "Hairs", price: "$80" },
+      { label: "Deep Tissue", price: "$20" },
+      { label: "Flexible", price: "$10" },
+      { label: "Aromatherapy", price: "$25" },
+    ],
   },
 ];
