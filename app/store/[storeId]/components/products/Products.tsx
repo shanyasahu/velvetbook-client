@@ -8,10 +8,10 @@ import SharedSlider from "../shared/SharedSlider";
 import ProductCard from "./ProductCard";
 
 const PRODUCT_BREAKPOINTS = {
-  0: { slidesPerView: 2.4, spaceBetween: 12 },
-  640: { slidesPerView: 2.4, spaceBetween: 14 },
-  1024: { slidesPerView: 2.5, spaceBetween: 16 },
-  1280: { slidesPerView: 3, spaceBetween: 16 },
+  0: { slidesPerView: 2.4, spaceBetween: 10 },
+  640: { slidesPerView: 3.2, spaceBetween: 10 },
+  1024: { slidesPerView: 4, spaceBetween: 10 },
+  1280: { slidesPerView: 5, spaceBetween: 10 },
 };
 
 interface Props {

@@ -14,13 +14,13 @@ export default function HeroInfo({ hero }: Props) {
         {hero.welcomeText}
       </p>
 
-      <h1 className="mt-1 font-[family-name:var(--font-heading)] text-xl font-bold leading-tight text-(--text-primary) sm:text-3xl lg:text-4xl">
+      <h1 className="mt-1 font-[family-name:var(--font-heading)] text-lg font-bold leading-tight text-white sm:text-2xl lg:text-3xl">
         {hero.titlePrefix}
         <span className="text-(--brand-gold)">{hero.titleHighlight}</span>
         {hero.titleSuffix}
       </h1>
 
-      <p className="mt-2 max-w-md text-[11px] leading-relaxed text-(--text-secondary) sm:text-sm lg:mt-3">
+      <p className="mt-2 max-w-md text-xs font-medium leading-relaxed text-white/85 sm:text-sm lg:mt-3">
         {hero.description}
       </p>
 
@@ -28,11 +28,13 @@ export default function HeroInfo({ hero }: Props) {
         <StatusBadge
           label={hero.statusLabel}
           status={hero.isOnline ? "online" : "offline"}
+          variant="overlay"
         />
 
         <StatusBadge
           label={hero.location}
-          icon={<MapPin size={12} className="text-(--text-muted)" />}
+          variant="overlay"
+          icon={<MapPin size={12} className="text-white/70" />}
         />
       </div>
     </div>

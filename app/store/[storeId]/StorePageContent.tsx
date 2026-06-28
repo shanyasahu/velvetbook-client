@@ -1,6 +1,7 @@
 import Hero from "./components/hero/Hero";
 import MenuSidebar from "./components/menu/MenuSidebar";
 import Products from "./components/products/Products";
+import ProductsSidebar from "./components/products/ProductsSidebar";
 import Reviews from "./components/reviews/Reviews";
 import Services from "./components/services/Services";
 import Staff from "./components/staff/Staff";
@@ -31,7 +32,15 @@ export default function StorePageContent({ data }: Props) {
             <Reviews meta={reviews.meta} items={reviews.items} />
           </div>
 
-          <MenuSidebar meta={menu.meta} items={menu.items} />
+          <aside className="order-3 xl:order-none">
+            <div className="space-y-5 xl:sticky xl:top-24">
+              <MenuSidebar meta={menu.meta} items={menu.items} />
+              <ProductsSidebar
+                meta={products.meta}
+                items={products.items}
+              />
+            </div>
+          </aside>
         </div>
       </div>
     </main>

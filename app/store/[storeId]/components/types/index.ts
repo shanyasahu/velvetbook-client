@@ -142,6 +142,7 @@ export interface SectionMeta {
   title: string;
   viewAllLabel: string;
   viewAllHref: string;
+  footerLabel?: string;
 }
 
 export interface SidebarMeta {

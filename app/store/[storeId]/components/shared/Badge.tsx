@@ -53,11 +53,24 @@ interface StatusBadgeProps {
   label: string;
   status?: "online" | "offline";
   icon?: ReactNode;
+  variant?: "default" | "overlay";
 }
 
-export function StatusBadge({ label, status, icon }: StatusBadgeProps) {
+export function StatusBadge({
+  label,
+  status,
+  icon,
+  variant = "default",
+}: StatusBadgeProps) {
+  const overlayStyles =
+    "border-white/20 bg-white/10 text-white/90 backdrop-blur-md";
+  const defaultStyles =
+    "border-(--border) bg-(--bg-card) text-(--text-secondary)";
+
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-(--border) bg-(--bg-card) px-3 py-1 text-[11px] font-medium text-(--text-secondary) lg:text-xs">
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-medium lg:text-xs ${variant === "overlay" ? overlayStyles : defaultStyles}`}
+    >
       {status === "online" && (
         <span className="h-2 w-2 rounded-full bg-(--success)" />
       )}

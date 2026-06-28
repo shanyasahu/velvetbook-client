@@ -3,7 +3,8 @@
     "meta": {
       "title": "Our Products",
       "viewAllLabel": "View All",
-      "viewAllHref": "/"
+      "viewAllHref": "/",
+      "footerLabel": "View All Products"
     },
     "items": [
       {
@@ -42,7 +43,8 @@
     "meta": {
       "title": "Our Products",
       "viewAllLabel": "View All",
-      "viewAllHref": "/"
+      "viewAllHref": "/",
+      "footerLabel": "View All Products"
     },
     "items": [
       {
