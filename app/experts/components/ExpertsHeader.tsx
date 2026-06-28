@@ -9,10 +9,12 @@ interface ExpertsHeaderProps {
   activeCategory: {
     title: string;
     description: string;
-    pills: string[];
+    pillItems: { value: string; label: string }[];
+    showMorePills?: boolean;
   };
   pillValue: string;
   onPillChange: (value: string) => void;
+  onMorePillsClick?: () => void;
 }
 
 export function ExpertsHeader({
@@ -21,6 +23,7 @@ export function ExpertsHeader({
   activeCategory,
   pillValue,
   onPillChange,
+  onMorePillsClick,
 }: ExpertsHeaderProps) {
   return (
     <div className="hidden gap-5 lg:flex lg:items-start">
@@ -41,9 +44,11 @@ export function ExpertsHeader({
           {activeCategory.description}
         </p>
         <CategoryPills
-          pills={activeCategory.pills}
+          items={activeCategory.pillItems}
           value={pillValue}
           onChange={onPillChange}
+          showMore={activeCategory.showMorePills}
+          onMoreClick={onMorePillsClick}
           className="mt-3"
         />
       </div>

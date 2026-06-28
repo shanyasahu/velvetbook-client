@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Headset } from "lucide-react";
 
@@ -19,34 +18,34 @@ export function TopCategoriesSidebar({
   onSelect,
 }: TopCategoriesSidebarProps) {
   return (
-    <aside className="hidden w-[200px] shrink-0 lg:block">
-      <div className="sticky top-24 space-y-4">
+    <aside className="hidden w-[220px] shrink-0 lg:block">
+      <div className="sticky top-24 flex h-[calc(100vh-7rem)] flex-col gap-4">
         <nav
           aria-label="Expert categories"
-          className="rounded-[var(--radius-md)] border border-(--border) bg-(--bg-card) p-3 shadow-[var(--shadow-card)]"
+          className="flex flex-1 flex-col rounded-[var(--radius-md)] border border-(--border) bg-(--bg-card) p-4 shadow-[var(--shadow-card)]"
         >
-          <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-(--text-muted)">
+          <p className="mb-3 px-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-(--text-muted)">
             Categories
           </p>
 
-          <ul className="space-y-0.5">
+          <ul className="flex flex-1 flex-col justify-between gap-1.5">
             {categories.map((category) => {
               const Icon = getIcon(category.icon);
               const isActive = category.id === activeId;
 
               return (
-                <li key={category.id}>
+                <li key={category.id} className="flex-1">
                   <button
                     type="button"
                     onClick={() => onSelect(category.id)}
                     aria-current={isActive ? "true" : undefined}
-                    className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] font-medium transition-colors ${
+                    className={`flex h-full w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-colors ${
                       isActive
                         ? "primary-button text-white"
                         : "text-(--text-secondary) hover:bg-(--bg-secondary) hover:text-(--text-primary)"
                     }`}
                   >
-                    <Icon size={16} strokeWidth={1.8} className="shrink-0" />
+                    <Icon size={18} strokeWidth={1.8} className="shrink-0" />
                     <span className="truncate">{category.label}</span>
                   </button>
                 </li>
@@ -55,31 +54,7 @@ export function TopCategoriesSidebar({
           </ul>
         </nav>
 
-        <div className="overflow-hidden rounded-[var(--radius-md)] border border-(--border) bg-(--bg-card) p-4 shadow-[var(--shadow-card)]">
-          <div className="relative mb-3 h-24 w-full overflow-hidden rounded-lg">
-            <Image
-              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=70"
-              alt="Become an expert"
-              fill
-              sizes="200px"
-              className="object-cover"
-            />
-          </div>
-          <h3 className="text-sm font-semibold text-(--text-primary)">
-            Become an Expert
-          </h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-(--text-secondary)">
-            Join our community of professionals and grow your business.
-          </p>
-          <Link
-            href="/auth"
-            className="primary-button mt-3 flex h-9 w-full items-center justify-center rounded-lg text-xs font-semibold text-white"
-          >
-            Join Now
-          </Link>
-        </div>
-
-        <div className="rounded-[var(--radius-md)] border border-(--border) bg-(--bg-card) p-4 shadow-[var(--shadow-card)]">
+        <div className="shrink-0 rounded-[var(--radius-md)] border border-(--border) bg-(--bg-card) p-4 shadow-[var(--shadow-card)]">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-(--bg-secondary) text-(--accent-secondary)">
             <Headset size={18} strokeWidth={1.6} />
           </span>

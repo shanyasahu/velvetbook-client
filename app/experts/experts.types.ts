@@ -1,4 +1,4 @@
-export type Gender = "female" | "male";
+export type Gender = "female" | "male" | "other";
 
 export interface Expert {
   id: string;
@@ -54,6 +54,8 @@ export interface FilterGroup {
   icon: string;
   options: FilterOption[];
   defaultValue: string;
+  /** When true, the dropdown shows a search box to filter options. */
+  searchable?: boolean;
 }
 
 export interface SortOption {

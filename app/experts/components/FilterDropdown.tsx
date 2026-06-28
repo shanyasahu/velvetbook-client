@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type ReactNode } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { Check, ChevronDown, Search } from "lucide-react";
 
 import type { FilterOption } from "../experts.types";
 import { useClickOutside } from "./lib/useClickOutside";
@@ -17,6 +17,9 @@ interface FilterDropdownProps {
   /** Fallback label when no option matches `value`. */
   placeholder?: string;
   align?: "left" | "right";
+  /** When true, renders a search box to filter the options. */
+  searchable?: boolean;
+  searchPlaceholder?: string;
   className?: string;
 }
 
@@ -28,15 +31,36 @@ export function FilterDropdown({
   prefix,
   placeholder = "Select",
   align = "left",
+  searchable = false,
+  searchPlaceholder = "Search...",
   className = "",
 }: FilterDropdownProps) {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
 
   useClickOutside(containerRef, () => setOpen(false), open);
 
+  useEffect(() => {
+    if (open && searchable) {
+      searchInputRef.current?.focus();
+    }
+    if (!open) {
+      setQuery("");
+    }
+  }, [open, searchable]);
+
   const selected = options.find((option) => option.id === value);
+
+  const filteredOptions = useMemo(() => {
+    if (!searchable || !query.trim()) return options;
+    const needle = query.trim().toLowerCase();
+    return options.filter((option) =>
+      option.label.toLowerCase().includes(needle),
+    );
+  }, [options, query, searchable]);
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
@@ -65,36 +89,68 @@ export function FilterDropdown({
       </button>
 
       {open && (
-        <ul
-          id={listId}
-          role="listbox"
-          className={`absolute z-30 mt-2 max-h-64 min-w-[180px] overflow-y-auto rounded-xl border border-(--border) bg-(--bg-card) py-1.5 shadow-lg ${
+        <div
+          className={`absolute z-30 mt-2 min-w-[200px] overflow-hidden rounded-xl border border-(--border) bg-(--bg-card) shadow-lg ${
             align === "right" ? "right-0" : "left-0"
           }`}
         >
-          {options.map((option) => {
-            const isActive = option.id === value;
-            return (
-              <li key={option.id} role="option" aria-selected={isActive}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onChange(option.id);
-                    setOpen(false);
-                  }}
-                  className={`flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-xs transition-colors hover:bg-(--bg-secondary) ${
-                    isActive
-                      ? "font-medium text-(--accent-primary)"
-                      : "text-(--text-primary)"
-                  }`}
-                >
-                  <span className="truncate">{option.label}</span>
-                  {isActive && <Check size={13} strokeWidth={2} className="shrink-0" />}
-                </button>
+          {searchable && (
+            <div className="border-b border-(--border) p-2">
+              <div className="flex items-center gap-2 rounded-lg border border-(--border) bg-(--bg-secondary) px-2.5 py-1.5">
+                <Search
+                  size={13}
+                  strokeWidth={1.8}
+                  className="shrink-0 text-(--text-muted)"
+                />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder={searchPlaceholder}
+                  className="w-full bg-transparent text-xs text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none"
+                />
+              </div>
+            </div>
+          )}
+
+          <ul
+            id={listId}
+            role="listbox"
+            className="max-h-60 overflow-y-auto py-1.5"
+          >
+            {filteredOptions.length === 0 ? (
+              <li className="px-3 py-2 text-xs text-(--text-muted)">
+                No matches found
               </li>
-            );
-          })}
-        </ul>
+            ) : (
+              filteredOptions.map((option) => {
+                const isActive = option.id === value;
+                return (
+                  <li key={option.id} role="option" aria-selected={isActive}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onChange(option.id);
+                        setOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-xs transition-colors hover:bg-(--bg-secondary) ${
+                        isActive
+                          ? "font-medium text-(--accent-primary)"
+                          : "text-(--text-primary)"
+                      }`}
+                    >
+                      <span className="truncate">{option.label}</span>
+                      {isActive && (
+                        <Check size={13} strokeWidth={2} className="shrink-0" />
+                      )}
+                    </button>
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        </div>
       )}
     </div>
   );

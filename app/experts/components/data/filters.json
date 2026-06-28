@@ -2,31 +2,69 @@
   "location": "Melbourne",
   "filters": [
     {
-      "id": "suburbs",
-      "label": "Suburbs",
-      "icon": "suburbs",
-      "defaultValue": "all",
-      "options": [
-        { "id": "all", "label": "All Suburbs" },
-        { "id": "cbd", "label": "Melbourne CBD" },
-        { "id": "south-yarra", "label": "South Yarra" },
-        { "id": "richmond", "label": "Richmond" },
-        { "id": "fitzroy", "label": "Fitzroy" },
-        { "id": "st-kilda", "label": "St Kilda" }
-      ]
-    },
-    {
       "id": "language",
       "label": "Language",
       "icon": "language",
       "defaultValue": "all",
+      "searchable": true,
       "options": [
         { "id": "all", "label": "All Languages" },
         { "id": "english", "label": "English" },
-        { "id": "hindi", "label": "Hindi" },
         { "id": "mandarin", "label": "Mandarin" },
+        { "id": "cantonese", "label": "Cantonese" },
         { "id": "vietnamese", "label": "Vietnamese" },
-        { "id": "thai", "label": "Thai" }
+        { "id": "thai", "label": "Thai" },
+        { "id": "filipino", "label": "Filipino (Tagalog)" },
+        { "id": "japanese", "label": "Japanese" },
+        { "id": "korean", "label": "Korean" },
+        { "id": "indonesian", "label": "Indonesian" },
+        { "id": "malay", "label": "Malay" },
+        { "id": "arabic", "label": "Arabic" },
+        { "id": "french", "label": "French" },
+        { "id": "german", "label": "German" },
+        { "id": "spanish", "label": "Spanish" },
+        { "id": "italian", "label": "Italian" },
+        { "id": "greek", "label": "Greek" },
+        { "id": "russian", "label": "Russian" },
+        { "id": "swahili", "label": "Swahili" },
+        { "id": "sinhala", "label": "Sinhala" },
+        { "id": "hindi", "label": "Hindi" },
+        { "id": "bengali", "label": "Bengali" },
+        { "id": "urdu", "label": "Urdu" },
+        { "id": "punjabi", "label": "Punjabi" },
+        { "id": "gujarati", "label": "Gujarati" },
+        { "id": "marathi", "label": "Marathi" },
+        { "id": "telugu", "label": "Telugu" },
+        { "id": "tamil", "label": "Tamil" },
+        { "id": "malayalam", "label": "Malayalam" },
+        { "id": "kannada", "label": "Kannada" },
+        { "id": "nepali", "label": "Nepali" }
+      ]
+    },
+    {
+      "id": "nationality",
+      "label": "Nationality",
+      "icon": "nationality",
+      "defaultValue": "all",
+      "searchable": true,
+      "options": [
+        { "id": "all", "label": "All Nationalities" },
+        { "id": "aussie", "label": "Aussie" },
+        { "id": "chinese", "label": "Chinese" },
+        { "id": "vietnamese", "label": "Vietnamese" },
+        { "id": "filipino", "label": "Filipino" },
+        { "id": "japanese", "label": "Japanese" },
+        { "id": "korean", "label": "Korean" },
+        { "id": "taiwanese", "label": "Taiwanese" },
+        { "id": "thai", "label": "Thai" },
+        { "id": "arab", "label": "Arab" },
+        { "id": "african", "label": "African" },
+        { "id": "european", "label": "European" },
+        { "id": "american", "label": "American" },
+        { "id": "indian", "label": "Indian" },
+        { "id": "pakistani", "label": "Pakistani" },
+        { "id": "bangladeshi", "label": "Bangladeshi" },
+        { "id": "sri-lankan", "label": "Sri Lankan" }
       ]
     },
     {
@@ -37,7 +75,8 @@
       "options": [
         { "id": "all", "label": "All Genders" },
         { "id": "female", "label": "Female" },
-        { "id": "male", "label": "Male" }
+        { "id": "male", "label": "Male" },
+        { "id": "other", "label": "Other" }
       ]
     },
     {
@@ -86,6 +125,7 @@
   ],
   "genderOptions": [
     { "id": "female", "label": "Female" },
-    { "id": "male", "label": "Male" }
+    { "id": "male", "label": "Male" },
+    { "id": "other", "label": "Other" }
   ]
 }

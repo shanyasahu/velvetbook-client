@@ -61,7 +61,7 @@ export function MobileCategoriesPanel({
           </div>
 
           {/* Filter dropdowns */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {filters.map((filter) => {
               const Icon = getIcon(filter.icon);
               return (
@@ -71,7 +71,9 @@ export function MobileCategoriesPanel({
                   value={filterValues[filter.id] ?? filter.defaultValue}
                   onChange={(value) => onFilterChange(filter.id, value)}
                   icon={<Icon size={14} strokeWidth={1.8} />}
-                  className="w-full"
+                  searchable={filter.searchable}
+                  searchPlaceholder={`Search ${filter.label.toLowerCase()}...`}
+                  className={`w-full ${filter.searchable ? "sm:col-span-2" : ""}`}
                 />
               );
             })}

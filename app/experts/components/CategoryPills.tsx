@@ -2,8 +2,16 @@
 
 import { ChevronDown } from "lucide-react";
 
+interface CategoryPillItem {
+  value: string;
+  label: string;
+}
+
 interface CategoryPillsProps {
-  pills: string[];
+  /** Simple string pills — value and label are the same. */
+  pills?: string[];
+  /** Structured pills with separate value (id) and display label. */
+  items?: CategoryPillItem[];
   value: string;
   onChange: (value: string) => void;
   /** Render a trailing "More" pill (display-only, matches reference). */
@@ -14,23 +22,27 @@ interface CategoryPillsProps {
 
 export function CategoryPills({
   pills,
+  items,
   value,
   onChange,
   showMore = false,
   onMoreClick,
   className = "",
 }: CategoryPillsProps) {
+  const pillItems: CategoryPillItem[] =
+    items ?? pills?.map((pill) => ({ value: pill, label: pill })) ?? [];
+
   return (
     <div
       className={`flex items-center gap-2 overflow-x-auto scrollbar-none ${className}`}
     >
-      {pills.map((pill) => {
-        const isActive = pill === value;
+      {pillItems.map((pill) => {
+        const isActive = pill.value === value;
         return (
           <button
-            key={pill}
+            key={pill.value || "all"}
             type="button"
-            onClick={() => onChange(pill)}
+            onClick={() => onChange(pill.value)}
             aria-pressed={isActive}
             className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-medium transition-colors lg:text-xs ${
               isActive
@@ -38,7 +50,7 @@ export function CategoryPills({
                 : "border-(--border) bg-(--bg-card) text-(--text-secondary) hover:border-(--accent-primary) hover:text-(--text-primary)"
             }`}
           >
-            {pill}
+            {pill.label}
           </button>
         );
       })}

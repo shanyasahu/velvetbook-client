@@ -23,6 +23,56 @@ interface ExpertsPageContentProps {
 }
 
 const MOBILE_ALL_PILL = "All";
+const MAX_INLINE_PILLS = 5;
+
+/** Short labels for the horizontal sub-category pill bar. */
+const SUB_CATEGORY_PILL_LABELS: Record<string, string> = {
+  "makeup-artists": "Makeup",
+  "hair-stylists": "Hair Styling",
+  "nail-technicians": "Nails",
+  "lash-artists": "Lashes & Brows",
+  "brow-specialists": "Brows",
+  "facial-skin": "Facial & Skin",
+  barbers: "Barbers",
+  "massage-therapy": "Massage",
+  "waxing-specialists": "Waxing",
+  "cosmetic-tattoo": "Cosmetic Tattoo",
+  "bridal-beauty": "Bridal",
+  "spa-therapists": "Spa",
+};
+
+const TOP_CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  therapists: "Licensed therapists for massage, spa, and wellness treatments.",
+  coaches: "Professional coaches to help you reach your personal goals.",
+  trainers: "Certified trainers and grooming experts for fitness and style.",
+  wellness: "Holistic wellness services for body and mind.",
+  health: "Health and skincare specialists for your wellbeing.",
+  beauty: "Discover beauty experts for every look and occasion.",
+  lifestyle: "Lifestyle experts for weddings, events, and everyday style.",
+  more: "Browse all available expert categories.",
+};
+
+function getSubCategoryPillLabel(sub: { id: string; label: string }): string {
+  return SUB_CATEGORY_PILL_LABELS[sub.id] ?? sub.label;
+}
+
+function buildCategoryPillItems(
+  subCategories: ExpertsPageData["subCategories"],
+  maxInline = MAX_INLINE_PILLS,
+) {
+  const subPills = subCategories.map((sub) => ({
+    value: sub.id,
+    label: getSubCategoryPillLabel(sub),
+  }));
+
+  return {
+    pillItems: [
+      { value: "", label: MOBILE_ALL_PILL },
+      ...subPills.slice(0, maxInline),
+    ],
+    showMorePills: subPills.length > maxInline,
+  };
+}
 
 /** Which sub-categories appear under each main category. */
 const SUB_CATEGORIES_BY_TOP: Record<string, string[]> = {
@@ -122,12 +172,6 @@ function matchesPrice(expert: Expert, priceFilter: string): boolean {
   return true;
 }
 
-function matchesPill(expert: Expert, pill: string): boolean {
-  if (!pill || pill === MOBILE_ALL_PILL) return true;
-  const haystack = [expert.specialty, ...expert.tags].join(" ").toLowerCase();
-  return haystack.includes(pill.toLowerCase());
-}
-
 export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const mobilePrimarySliderRef = useRef<ExpertSliderHandle>(null);
 
@@ -142,9 +186,7 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const [sortValue, setSortValue] = useState(
     data.sortOptions[0]?.id ?? "popular",
   );
-  const [headerPill, setHeaderPill] = useState("");
   const [mobileCategoryId, setMobileCategoryId] = useState("beauty");
-  const [mobilePill, setMobilePill] = useState(MOBILE_ALL_PILL);
   const [searchQuery, setSearchQuery] = useState("");
   const [showMobileCategories, setShowMobileCategories] = useState(false);
 
@@ -155,9 +197,9 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
     return data.subCategories.filter((category) => allowed.has(category.id));
   }, [data.subCategories, topCategoryId]);
 
-  const selectedSection = useMemo(
-    () => data.sections.find((section) => section.id === subCategoryId),
-    [data.sections, subCategoryId],
+  const { pillItems, showMorePills } = useMemo(
+    () => buildCategoryPillItems(visibleSubCategories),
+    [visibleSubCategories],
   );
 
   const mixedExperts = useMemo(
@@ -180,15 +222,16 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
 
   // Sections below the main bar, in the requested order (massage → barbers),
   // skipping whichever category is currently drilled into.
-  const secondarySections = useMemo(
-    () =>
-      SECONDARY_SECTION_ORDER.filter((id) => id !== subCategoryId)
-        .map((id) => data.sections.find((section) => section.id === id))
-        .filter((section): section is (typeof data.sections)[number] =>
-          Boolean(section),
-        ),
-    [data.sections, subCategoryId],
-  );
+  const secondarySections = useMemo(() => {
+    // Hide the curated secondary rows while searching — they'd just show
+    // "No experts found" since the search only targets the main pool.
+    if (searchQuery.trim()) return [];
+    return SECONDARY_SECTION_ORDER.filter((id) => id !== subCategoryId)
+      .map((id) => data.sections.find((section) => section.id === id))
+      .filter((section): section is (typeof data.sections)[number] =>
+        Boolean(section),
+      );
+  }, [data.sections, subCategoryId, searchQuery]);
 
   const applyFiltersAndSort = useCallback(
     (experts: Expert[]) => {
@@ -219,19 +262,13 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   );
 
   const desktopPrimaryExperts = useMemo(
-    () =>
-      applyFiltersAndSort(
-        primaryExpertsBase.filter((expert) => matchesPill(expert, headerPill)),
-      ),
-    [applyFiltersAndSort, primaryExpertsBase, headerPill],
+    () => applyFiltersAndSort(primaryExpertsBase),
+    [applyFiltersAndSort, primaryExpertsBase],
   );
 
   const mobilePrimaryExperts = useMemo(
-    () =>
-      applyFiltersAndSort(
-        primaryExpertsBase.filter((expert) => matchesPill(expert, mobilePill)),
-      ),
-    [applyFiltersAndSort, primaryExpertsBase, mobilePill],
+    () => applyFiltersAndSort(primaryExpertsBase),
+    [applyFiltersAndSort, primaryExpertsBase],
   );
 
   const handleFilterChange = useCallback((filterId: string, value: string) => {
@@ -241,14 +278,18 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const handleTopCategorySelect = useCallback((id: string) => {
     setTopCategoryId(id);
     setSubCategoryId("");
-    setHeaderPill("");
-    setMobilePill(MOBILE_ALL_PILL);
   }, []);
 
   const handleSubCategorySelect = useCallback((id: string) => {
     setSubCategoryId((prev) => (prev === id ? "" : id));
-    setHeaderPill("");
-    setMobilePill(MOBILE_ALL_PILL);
+  }, []);
+
+  const handleCategoryPillSelect = useCallback((value: string) => {
+    if (!value) {
+      setSubCategoryId("");
+      return;
+    }
+    setSubCategoryId((prev) => (prev === value ? "" : value));
   }, []);
 
   const resultsLabel = subCategoryId
@@ -257,6 +298,8 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const activeTopLabel =
     data.topCategories.find((category) => category.id === topCategoryId)
       ?.label ?? "Experts";
+  const activeTopDescription =
+    TOP_CATEGORY_DESCRIPTIONS[topCategoryId] ?? data.activeCategory.description;
 
   const viewOnMap = (
     <button
@@ -282,6 +325,8 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
             sortOptions={data.sortOptions}
             sortValue={sortValue}
             onSortChange={setSortValue}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
           />
         </div>
 
@@ -367,10 +412,10 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
                 </div>
 
                 <CategoryPills
-                  pills={data.mobilePills.filter((pill) => pill !== "More")}
-                  value={mobilePill}
-                  onChange={setMobilePill}
-                  showMore
+                  items={pillItems}
+                  value={subCategoryId}
+                  onChange={handleCategoryPillSelect}
+                  showMore={showMorePills}
                   onMoreClick={() => mobilePrimarySliderRef.current?.slideNext()}
                 />
 
@@ -400,14 +445,13 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
                 title="Browse All Categories"
                 subtitle="Explore services and find the perfect expert for your needs."
                 activeCategory={{
-                  title: selectedSection?.title ?? data.activeCategory.title,
-                  description: data.activeCategory.description,
-                  pills: data.activeCategory.pills,
+                  title: activeTopLabel,
+                  description: activeTopDescription,
+                  pillItems,
+                  showMorePills,
                 }}
-                pillValue={headerPill}
-                onPillChange={(pill) =>
-                  setHeaderPill((prev) => (prev === pill ? "" : pill))
-                }
+                pillValue={subCategoryId}
+                onPillChange={handleCategoryPillSelect}
               />
 
               <ExpertSection

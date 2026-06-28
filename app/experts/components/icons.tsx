@@ -10,6 +10,7 @@ import {
   Fingerprint,
   Flower2,
   Gem,
+  Globe,
   HandHeart,
   Heart,
   Languages,
@@ -59,6 +60,7 @@ const ICONS: Record<string, IconComponent> = {
   // Toolbar filters
   suburbs: MapPin,
   language: Languages,
+  nationality: Globe,
   gender: Users,
   price: CircleDollarSign,
   age: CalendarRange,
