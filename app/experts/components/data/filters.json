@@ -1,0 +1,91 @@
+{
+  "location": "Melbourne",
+  "filters": [
+    {
+      "id": "suburbs",
+      "label": "Suburbs",
+      "icon": "suburbs",
+      "defaultValue": "all",
+      "options": [
+        { "id": "all", "label": "All Suburbs" },
+        { "id": "cbd", "label": "Melbourne CBD" },
+        { "id": "south-yarra", "label": "South Yarra" },
+        { "id": "richmond", "label": "Richmond" },
+        { "id": "fitzroy", "label": "Fitzroy" },
+        { "id": "st-kilda", "label": "St Kilda" }
+      ]
+    },
+    {
+      "id": "language",
+      "label": "Language",
+      "icon": "language",
+      "defaultValue": "all",
+      "options": [
+        { "id": "all", "label": "All Languages" },
+        { "id": "english", "label": "English" },
+        { "id": "hindi", "label": "Hindi" },
+        { "id": "mandarin", "label": "Mandarin" },
+        { "id": "vietnamese", "label": "Vietnamese" },
+        { "id": "thai", "label": "Thai" }
+      ]
+    },
+    {
+      "id": "gender",
+      "label": "Gender",
+      "icon": "gender",
+      "defaultValue": "all",
+      "options": [
+        { "id": "all", "label": "All Genders" },
+        { "id": "female", "label": "Female" },
+        { "id": "male", "label": "Male" }
+      ]
+    },
+    {
+      "id": "price",
+      "label": "Price",
+      "icon": "price",
+      "defaultValue": "any",
+      "options": [
+        { "id": "any", "label": "Any Price" },
+        { "id": "0-50", "label": "$0 - $50" },
+        { "id": "50-100", "label": "$50 - $100" },
+        { "id": "100-plus", "label": "$100 & above" }
+      ]
+    },
+    {
+      "id": "age",
+      "label": "Age",
+      "icon": "age",
+      "defaultValue": "all",
+      "options": [
+        { "id": "all", "label": "All Ages" },
+        { "id": "18-25", "label": "18 - 25" },
+        { "id": "26-35", "label": "26 - 35" },
+        { "id": "36-45", "label": "36 - 45" },
+        { "id": "46-plus", "label": "46+" }
+      ]
+    },
+    {
+      "id": "availability",
+      "label": "Online/Offline",
+      "icon": "online",
+      "defaultValue": "all",
+      "options": [
+        { "id": "all", "label": "Online/Offline" },
+        { "id": "online", "label": "Online" },
+        { "id": "offline", "label": "Offline" }
+      ]
+    }
+  ],
+  "sortOptions": [
+    { "id": "popular", "label": "Popular" },
+    { "id": "rating", "label": "Top Rated" },
+    { "id": "price-low", "label": "Price: Low to High" },
+    { "id": "price-high", "label": "Price: High to Low" },
+    { "id": "nearest", "label": "Nearest" }
+  ],
+  "genderOptions": [
+    { "id": "female", "label": "Female" },
+    { "id": "male", "label": "Male" }
+  ]
+}

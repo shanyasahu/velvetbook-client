@@ -4,11 +4,17 @@ import { Search, SlidersHorizontal } from "lucide-react";
 
 interface SearchBarProps {
     className?: string;
+    placeholder?: string;
+    value?: string;
+    onChange?: (value: string) => void;
     onFilterClick?: () => void;
 }
 
 export function SearchBar({
     className = "",
+    placeholder = "Search services, salons, spas...",
+    value,
+    onChange,
     onFilterClick,
 }: SearchBarProps) {
     return (
@@ -31,7 +37,9 @@ export function SearchBar({
 
             <input
                 type="text"
-                placeholder="Search services, salons, spas..."
+                value={value ?? ""}
+                onChange={(e) => onChange?.(e.target.value)}
+                placeholder={placeholder}
                 className="
           flex-1 bg-transparent
           text-xs text-(--text-primary)

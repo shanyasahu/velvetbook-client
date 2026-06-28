@@ -1,11 +1,10 @@
 "use client";
-import { useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CalendarDays,
   ChevronDown,
   ChevronRight,
   MapPin,
-  Star,
   X,
 } from "lucide-react";
 
@@ -60,9 +59,45 @@ export function HomeFilterSidebar({
   onClose,
 }: HomeFilterSidebarProps) {
   const [selectedLocation, setSelectedLocation] = useState("Indore, India");
+  const [locationInput, setLocationInput] = useState("Indore, India");
   const [locationOpen, setLocationOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
+  const locationRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const filteredLocations = useMemo(() => {
+    const query = locationInput.trim().toLowerCase();
+    if (!query || query === selectedLocation.toLowerCase()) return locations;
+    return locations.filter((location) =>
+      location.toLowerCase().includes(query),
+    );
+  }, [locationInput, selectedLocation]);
+
+  const commitLocation = (location: string) => {
+    setSelectedLocation(location);
+    setLocationInput(location);
+    setLocationOpen(false);
+  };
+
+  useEffect(() => {
+    if (!locationOpen) {
+      setLocationInput(selectedLocation);
+      return;
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        locationRef.current &&
+        !locationRef.current.contains(event.target as Node)
+      ) {
+        setLocationOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [locationOpen, selectedLocation]);
 
   const formatDate = (date: string) => {
     if (!date) return "Select Date";
@@ -112,17 +147,15 @@ export function HomeFilterSidebar({
 
               <button
                 type="button"
-                onClick={() => setSelectedLocation("Indore, India")}
+                onClick={() => commitLocation("Indore, India")}
                 className="text-[10px] font-semibold text-(--accent-secondary)"
               >
                 Reset
               </button>
             </div>
 
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setLocationOpen((prev) => !prev)}
+            <div className="relative" ref={locationRef}>
+              <div
                 className="
         flex
         h-9
@@ -134,27 +167,70 @@ export function HomeFilterSidebar({
         border-(--border)
         bg-(--bg-card)
         px-3
-        text-left
         text-[11px]
         text-(--text-primary)
+        focus-within:border-(--accent-primary)
       "
               >
-                <MapPin size={13} strokeWidth={1.5} />
+                <MapPin size={13} strokeWidth={1.5} className="shrink-0" />
 
-                <span className="flex-1 truncate">
-                  {selectedLocation}
-                </span>
-
-                <ChevronDown
-                  size={14}
-                  strokeWidth={1.5}
-                  className={`transition-transform duration-200 ${locationOpen ? "rotate-180" : ""
-                    }`}
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={locationInput}
+                  onChange={(e) => {
+                    setLocationInput(e.target.value);
+                    setLocationOpen(true);
+                  }}
+                  onFocus={() => setLocationOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      setLocationOpen(false);
+                      setLocationInput(selectedLocation);
+                    }
+                    if (e.key === "Enter" && filteredLocations.length > 0) {
+                      commitLocation(filteredLocations[0]);
+                    }
+                  }}
+                  placeholder="Search location..."
+                  aria-autocomplete="list"
+                  aria-expanded={locationOpen}
+                  aria-controls="location-suggestions"
+                  className="min-w-0 flex-1 bg-transparent text-[11px] text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none"
                 />
-              </button>
+
+                {locationInput && locationInput !== selectedLocation && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      commitLocation("Indore, India");
+                      searchInputRef.current?.focus();
+                    }}
+                    aria-label="Clear search"
+                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-(--text-muted) transition-colors hover:bg-(--bg-card-hover) hover:text-(--text-primary)"
+                  >
+                    <X size={11} strokeWidth={2} />
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setLocationOpen((prev) => !prev)}
+                  aria-label="Toggle location suggestions"
+                  className="flex shrink-0 items-center justify-center text-(--text-muted)"
+                >
+                  <ChevronDown
+                    size={14}
+                    strokeWidth={1.5}
+                    className={`transition-transform duration-200 ${locationOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+              </div>
 
               {locationOpen && (
                 <div
+                  id="location-suggestions"
+                  role="listbox"
                   className="
           absolute
           z-20
@@ -168,15 +244,16 @@ export function HomeFilterSidebar({
           shadow-lg
         "
                 >
-                  {locations.map((location) => (
-                    <button
-                      key={location}
-                      type="button"
-                      onClick={() => {
-                        setSelectedLocation(location);
-                        setLocationOpen(false);
-                      }}
-                      className={`
+                  <div className="max-h-44 overflow-y-auto py-1">
+                    {filteredLocations.length > 0 ? (
+                      filteredLocations.map((location) => (
+                        <button
+                          key={location}
+                          type="button"
+                          role="option"
+                          aria-selected={selectedLocation === location}
+                          onClick={() => commitLocation(location)}
+                          className={`
               flex
               w-full
               items-center
@@ -188,15 +265,21 @@ export function HomeFilterSidebar({
               transition-colors
               hover:bg-(--bg-secondary)
               ${selectedLocation === location
-                          ? "bg-(--bg-secondary) font-medium text-(--accent-primary)"
-                          : ""
-                        }
+                              ? "bg-(--bg-secondary) font-medium text-(--accent-primary)"
+                              : "text-(--text-primary)"
+                            }
             `}
-                    >
-                      <MapPin size={12} />
-                      {location}
-                    </button>
-                  ))}
+                        >
+                          <MapPin size={12} className="shrink-0" />
+                          {location}
+                        </button>
+                      ))
+                    ) : (
+                      <p className="px-3 py-3 text-center text-[11px] text-(--text-muted)">
+                        No locations found
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

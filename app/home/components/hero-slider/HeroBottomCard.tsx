@@ -102,17 +102,16 @@ export function HeroBottomCard({ store, className = "" }: HeroBottomCardProps) {
                     View Store
                 </Link>
 
-                <Button
-                    variant="secondary"
-                    leftIcon={<Play size={12} strokeWidth={1.8} />}
-                    className="
-    flex-1 gap-2 rounded-[4px]
-    py-1 text-[10px] font-medium
+                <Link href={organizationHref} className="
+    secondary-button inline-flex flex-1 items-center justify-center gap-2
+    rounded-[4px] py-1 text-[10px] font-medium
+    text-(--text-primary) transition-all duration-300
     lg:py-2 lg:text-[11px]
-  "
-                >
+  ">
+                    <Play size={12} strokeWidth={1.8} />
                     Store Tour
-                </Button>
+
+                </Link>
 
                 <Link
                     href="/booking"
