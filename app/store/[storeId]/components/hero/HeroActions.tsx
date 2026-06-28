@@ -11,21 +11,21 @@ interface Props {
 
 export default function HeroActions({ hero }: Props) {
   return (
-    <div className="mt-3 flex flex-nowrap items-center gap-2 sm:mt-4 sm:gap-2.5">
+    <div className="flex w-full flex-nowrap items-center gap-1.5 sm:mt-1 sm:gap-2">
       <Link
         href={hero.bookNowHref}
-        className="primary-button inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg px-3 text-[11px] font-medium text-white sm:h-9 sm:gap-2 sm:rounded-xl sm:px-4 sm:text-xs lg:h-10 lg:px-5 lg:text-sm"
+        className="primary-button inline-flex h-8 min-w-0 flex-1 items-center justify-center gap-1 rounded-lg px-2 text-[8px] font-medium text-white sm:gap-1.5 sm:text-[11px] lg:h-9 lg:text-xs"
       >
-        <CalendarDays size={13} className="sm:size-3.5" />
-        {hero.bookNowLabel}
+        <CalendarDays size={12} className="shrink-0 lg:size-3.5" />
+        <span className="truncate">{hero.bookNowLabel}</span>
       </Link>
 
       <Link
         href={hero.videoUrl}
-        className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg border border-(--border) bg-(--bg-card) px-3 text-[11px] font-medium text-(--text-primary) shadow-[var(--shadow-card)] transition-colors hover:bg-(--bg-card-hover) sm:h-9 sm:gap-2 sm:rounded-xl sm:px-4 sm:text-xs lg:h-10 lg:px-5 lg:text-sm"
+        className="inline-flex h-8 min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border border-(--border) bg-(--bg-secondary) px-2 text-[8px] font-medium text-(--text-primary) shadow-[var(--shadow-card)] transition-colors hover:bg-(--bg-card-hover) sm:gap-1.5 sm:text-[11px] lg:h-9 lg:text-xs"
       >
-        <PlayCircle size={13} className="text-(--accent-primary) sm:size-3.5" />
-        {hero.watchVideoLabel}
+        <PlayCircle size={12} className="shrink-0 text-(--accent-primary) lg:size-3.5" />
+        <span className="truncate">{hero.watchVideoLabel}</span>
       </Link>
     </div>
   );

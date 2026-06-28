@@ -14,17 +14,17 @@ export default function Hero({ store }: Props) {
   const hero = getStoreHero(store);
 
   return (
-    <section className="relative overflow-hidden rounded-[var(--radius-lg)] border border-(--border) shadow-[var(--shadow-card)]">
-      <div className="absolute inset-0">
-        <HeroImage store={store} />
-      </div>
+    <section className="overflow-hidden rounded-[var(--radius-lg)] border border-(--border) shadow-[var(--shadow-card)]">
+      <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr]">
+        <div className="relative h-[200px] sm:h-[260px] lg:h-auto lg:min-h-[280px]">
+          <HeroImage store={store} />
 
-      <div className="store-hero-gradient absolute inset-0" />
+          <div className="absolute left-4 top-4 z-10">
+            <HeroBadges hero={hero} />
+          </div>
+        </div>
 
-      <div className="relative flex min-h-[220px] flex-col justify-center gap-3 p-5 sm:min-h-[260px] sm:p-6 lg:min-h-[300px] lg:gap-4 lg:p-8">
-        <HeroBadges hero={hero} />
-
-        <div className="max-w-xl lg:max-w-[34%]">
+        <div className="store-hero-panel flex flex-col justify-center gap-2 p-5 sm:p-4">
           <HeroInfo hero={hero} />
           <HeroActions hero={hero} />
         </div>

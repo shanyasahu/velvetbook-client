@@ -1,20 +1,3 @@
-.store-hero-gradient {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.78) 0%,
-    rgba(0, 0, 0, 0.55) 60%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
-}
-
-@media (min-width: 1024px) {
-  .store-hero-gradient {
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.6) 30%,
-      rgba(0, 0, 0, 0.3) 45%,
-      transparent 62%
-    );
-  }
+.store-hero-panel {
+  background: var(--bg-card);
 }
