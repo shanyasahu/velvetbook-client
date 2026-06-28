@@ -1,0 +1,15 @@
+.store-hero-overlay {
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--bg-card) 96%, transparent) 0%,
+      color-mix(in srgb, var(--bg-card) 70%, transparent) 40%,
+      color-mix(in srgb, var(--bg-card) 22%, transparent) 100%
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--bg-card) 92%, transparent) 0%,
+      color-mix(in srgb, var(--bg-card) 52%, transparent) 45%,
+      transparent 80%
+    );
+}

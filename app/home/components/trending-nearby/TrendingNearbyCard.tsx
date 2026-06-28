@@ -408,7 +408,7 @@ export function TrendingNearbyCard({ item }: TrendingNearbyCardProps) {
                         <Store size={15} />
 
 
-                        View Details
+                        View Store
 
                     </Link>
 
