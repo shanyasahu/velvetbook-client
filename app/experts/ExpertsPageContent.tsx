@@ -24,6 +24,72 @@ interface ExpertsPageContentProps {
 
 const MOBILE_ALL_PILL = "All";
 
+/** Which sub-categories appear under each main category. */
+const SUB_CATEGORIES_BY_TOP: Record<string, string[]> = {
+  therapists: ["spa-therapists", "massage-therapy", "facial-skin"],
+  coaches: ["facial-skin", "makeup-artists"],
+  trainers: ["barbers", "hair-stylists"],
+  wellness: ["spa-therapists", "massage-therapy", "facial-skin"],
+  health: ["facial-skin", "spa-therapists"],
+  beauty: [
+    "makeup-artists",
+    "hair-stylists",
+    "nail-technicians",
+    "lash-artists",
+    "brow-specialists",
+    "facial-skin",
+    "barbers",
+    "waxing-specialists",
+    "cosmetic-tattoo",
+    "bridal-beauty",
+    "spa-therapists",
+  ],
+  lifestyle: ["makeup-artists", "bridal-beauty", "hair-stylists"],
+  more: [],
+};
+
+/** Order for the sections shown below the main results bar. */
+const SECONDARY_SECTION_ORDER = ["massage-therapy", "barbers", "facial-skin"];
+
+function getExpertsForSubCategory(
+  subCategoryId: string,
+  sections: ExpertsPageData["sections"],
+  subCategories: ExpertsPageData["subCategories"],
+  mixedExperts: Expert[],
+): Expert[] {
+  const matchedSection = sections.find((section) => section.id === subCategoryId);
+  if (matchedSection) return matchedSection.experts;
+
+  const sub = subCategories.find((category) => category.id === subCategoryId);
+  if (!sub) return mixedExperts;
+
+  const allExperts = sections.flatMap((section) => section.experts);
+  const needle = sub.label.toLowerCase();
+
+  return allExperts.filter(
+    (expert) =>
+      expert.categoryId === subCategoryId ||
+      expert.specialty.toLowerCase().includes(needle.split(" ")[0]) ||
+      expert.tags.some((tag) => needle.includes(tag.toLowerCase())),
+  );
+}
+
+/**
+ * Deterministically interleaves experts from each section so the mixed
+ * pool alternates categories (no Math.random → no hydration mismatch).
+ */
+function interleaveExperts(lists: Expert[][]): Expert[] {
+  const result: Expert[] = [];
+  const maxLength = Math.max(0, ...lists.map((list) => list.length));
+  for (let index = 0; index < maxLength; index += 1) {
+    for (const list of lists) {
+      const expert = list[index];
+      if (expert) result.push(expert);
+    }
+  }
+  return result;
+}
+
 function parseDistance(distance: string): number {
   const match = distance.match(/[\d.]+/);
   return match ? Number.parseFloat(match[0]) : Number.POSITIVE_INFINITY;
@@ -66,7 +132,8 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const mobilePrimarySliderRef = useRef<ExpertSliderHandle>(null);
 
   const [topCategoryId, setTopCategoryId] = useState("beauty");
-  const [subCategoryId, setSubCategoryId] = useState(data.activeCategory.id);
+  // Empty = no sub-category drilled into → show the mixed pool.
+  const [subCategoryId, setSubCategoryId] = useState("");
   const [filterValues, setFilterValues] = useState<Record<string, string>>(() =>
     Object.fromEntries(
       data.filters.map((filter) => [filter.id, filter.defaultValue]),
@@ -81,16 +148,46 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showMobileCategories, setShowMobileCategories] = useState(false);
 
-  const primarySection = useMemo(
-    () =>
-      data.sections.find((section) => section.id === subCategoryId) ??
-      data.sections[0],
+  const visibleSubCategories = useMemo(() => {
+    const allowedIds = SUB_CATEGORIES_BY_TOP[topCategoryId];
+    if (!allowedIds?.length) return data.subCategories;
+    const allowed = new Set(allowedIds);
+    return data.subCategories.filter((category) => allowed.has(category.id));
+  }, [data.subCategories, topCategoryId]);
+
+  const selectedSection = useMemo(
+    () => data.sections.find((section) => section.id === subCategoryId),
     [data.sections, subCategoryId],
   );
 
+  const mixedExperts = useMemo(
+    () => interleaveExperts(data.sections.map((section) => section.experts)),
+    [data.sections],
+  );
+
+  const primaryExpertsBase = useMemo(
+    () =>
+      subCategoryId
+        ? getExpertsForSubCategory(
+            subCategoryId,
+            data.sections,
+            data.subCategories,
+            mixedExperts,
+          )
+        : mixedExperts,
+    [subCategoryId, data.sections, data.subCategories, mixedExperts],
+  );
+
+  // Sections below the main bar, in the requested order (massage → barbers),
+  // skipping whichever category is currently drilled into.
   const secondarySections = useMemo(
-    () => data.sections.filter((section) => section.id !== primarySection.id),
-    [data.sections, primarySection.id],
+    () =>
+      SECONDARY_SECTION_ORDER.filter((id) => id !== subCategoryId)
+        .map((id) => data.sections.find((section) => section.id === id))
+        .filter((section): section is (typeof data.sections)[number] =>
+          Boolean(section),
+        ),
+    [data.sections, subCategoryId],
   );
 
   const applyFiltersAndSort = useCallback(
@@ -124,28 +221,39 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
   const desktopPrimaryExperts = useMemo(
     () =>
       applyFiltersAndSort(
-        primarySection.experts.filter((expert) =>
-          matchesPill(expert, headerPill),
-        ),
+        primaryExpertsBase.filter((expert) => matchesPill(expert, headerPill)),
       ),
-    [applyFiltersAndSort, primarySection.experts, headerPill],
+    [applyFiltersAndSort, primaryExpertsBase, headerPill],
   );
 
   const mobilePrimaryExperts = useMemo(
     () =>
       applyFiltersAndSort(
-        primarySection.experts.filter((expert) =>
-          matchesPill(expert, mobilePill),
-        ),
+        primaryExpertsBase.filter((expert) => matchesPill(expert, mobilePill)),
       ),
-    [applyFiltersAndSort, primarySection.experts, mobilePill],
+    [applyFiltersAndSort, primaryExpertsBase, mobilePill],
   );
 
   const handleFilterChange = useCallback((filterId: string, value: string) => {
     setFilterValues((prev) => ({ ...prev, [filterId]: value }));
   }, []);
 
-  const resultsLabel = `${desktopPrimaryExperts.length} Experts Available in ${data.location}`;
+  const handleTopCategorySelect = useCallback((id: string) => {
+    setTopCategoryId(id);
+    setSubCategoryId("");
+    setHeaderPill("");
+    setMobilePill(MOBILE_ALL_PILL);
+  }, []);
+
+  const handleSubCategorySelect = useCallback((id: string) => {
+    setSubCategoryId((prev) => (prev === id ? "" : id));
+    setHeaderPill("");
+    setMobilePill(MOBILE_ALL_PILL);
+  }, []);
+
+  const resultsLabel = subCategoryId
+    ? `${desktopPrimaryExperts.length} ${visibleSubCategories.find((category) => category.id === subCategoryId)?.label ?? "Experts"} in ${data.location}`
+    : `${desktopPrimaryExperts.length} Experts Available in ${data.location}`;
   const activeTopLabel =
     data.topCategories.find((category) => category.id === topCategoryId)
       ?.label ?? "Experts";
@@ -181,14 +289,14 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
           <TopCategoriesSidebar
             categories={data.topCategories}
             activeId={topCategoryId}
-            onSelect={setTopCategoryId}
+            onSelect={handleTopCategorySelect}
           />
 
           <SubCategoriesSidebar
             title="All Categories"
-            categories={data.subCategories}
+            categories={visibleSubCategories}
             activeId={subCategoryId}
-            onSelect={setSubCategoryId}
+            onSelect={handleSubCategorySelect}
             viewAllLabel={`View All ${activeTopLabel} Services`}
           />
 
@@ -209,7 +317,7 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
                   categories={data.topCategories}
                   activeId={topCategoryId}
                   onSelect={(id) => {
-                    setTopCategoryId(id);
+                    handleTopCategorySelect(id);
                     setShowMobileCategories(false);
                   }}
                   onClose={() => setShowMobileCategories(false)}
@@ -292,7 +400,7 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
                 title="Browse All Categories"
                 subtitle="Explore services and find the perfect expert for your needs."
                 activeCategory={{
-                  title: primarySection.title,
+                  title: selectedSection?.title ?? data.activeCategory.title,
                   description: data.activeCategory.description,
                   pills: data.activeCategory.pills,
                 }}

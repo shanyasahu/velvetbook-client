@@ -16,6 +16,8 @@
     { "id": "lash-artists", "icon": "lash", "label": "Lash Artists", "count": 25 },
     { "id": "brow-specialists", "icon": "brow", "label": "Brow Specialists", "count": 18 },
     { "id": "facial-skin", "icon": "facial", "label": "Facial & Skin Experts", "count": 22 },
+    { "id": "barbers", "icon": "hair", "label": "Barbers", "count": 36 },
+    { "id": "massage-therapy", "icon": "spa", "label": "Massage Therapy", "count": 30 },
     { "id": "waxing-specialists", "icon": "waxing", "label": "Waxing Specialists", "count": 15 },
     { "id": "cosmetic-tattoo", "icon": "tattoo", "label": "Cosmetic Tattoo Artists", "count": 12 },
     { "id": "bridal-beauty", "icon": "bridal", "label": "Bridal Beauty Experts", "count": 20 },
