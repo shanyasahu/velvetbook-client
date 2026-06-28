@@ -356,24 +356,22 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
                 onFilterClick={() => setShowMobileCategories((prev) => !prev)}
               />
 
-              <div className={showMobileCategories ? "mt-3" : ""}>
-                <MobileCategoriesPanel
-                  open={showMobileCategories}
-                  categories={data.topCategories}
-                  activeId={topCategoryId}
-                  onSelect={(id) => {
-                    handleTopCategorySelect(id);
-                    setShowMobileCategories(false);
-                  }}
-                  onClose={() => setShowMobileCategories(false)}
-                  filters={data.filters}
-                  filterValues={filterValues}
-                  onFilterChange={handleFilterChange}
-                  sortOptions={data.sortOptions}
-                  sortValue={sortValue}
-                  onSortChange={setSortValue}
-                />
-              </div>
+              <MobileCategoriesPanel
+                open={showMobileCategories}
+                categories={data.topCategories}
+                activeId={topCategoryId}
+                onSelect={(id) => {
+                  handleTopCategorySelect(id);
+                  setShowMobileCategories(false);
+                }}
+                onClose={() => setShowMobileCategories(false)}
+                filters={data.filters}
+                filterValues={filterValues}
+                onFilterChange={handleFilterChange}
+                sortOptions={data.sortOptions}
+                sortValue={sortValue}
+                onSortChange={setSortValue}
+              />
 
               <div className="mt-3 space-y-4">
                 <FeaturedExpertCard expert={data.featuredExpert} />
@@ -394,6 +392,7 @@ export default function ExpertsPageContent({ data }: ExpertsPageContentProps) {
                   categories={data.mobileCategories}
                   activeId={mobileCategoryId}
                   onSelect={setMobileCategoryId}
+                  onAllCategoriesClick={() => setShowMobileCategories(true)}
                 />
               </section>
 

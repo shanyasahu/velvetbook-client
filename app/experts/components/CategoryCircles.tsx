@@ -8,6 +8,7 @@ interface CategoryCirclesProps {
   activeId: string;
   onSelect: (id: string) => void;
   allCategoriesLabel?: string;
+  onAllCategoriesClick?: () => void;
 }
 
 export function CategoryCircles({
@@ -15,6 +16,7 @@ export function CategoryCircles({
   activeId,
   onSelect,
   allCategoriesLabel = "All Categories",
+  onAllCategoriesClick,
 }: CategoryCirclesProps) {
   return (
     <div className="flex items-start gap-3 overflow-x-auto scrollbar-none">
@@ -30,7 +32,9 @@ export function CategoryCircles({
           >
             <span
               className={`relative h-16 w-16 overflow-hidden rounded-2xl border-2 transition-colors ${
-                isActive ? "border-(--accent-primary)" : "border-transparent"
+                isActive
+                  ? "border-(--accent-primary) shadow-[0_0_0_1px_var(--accent-primary)]"
+                  : "border-(--brand-gold)/60"
               }`}
             >
               <Image
@@ -54,9 +58,10 @@ export function CategoryCircles({
 
       <button
         type="button"
+        onClick={onAllCategoriesClick}
         className="flex w-16 shrink-0 flex-col items-center gap-1.5"
       >
-        <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-(--border) bg-(--bg-card) text-(--accent-secondary)">
+        <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-(--brand-gold)/60 bg-(--bg-card) text-(--accent-secondary)">
           <LayoutGrid size={22} strokeWidth={1.6} />
         </span>
         <span className="w-full truncate text-center text-[10px] font-medium text-(--text-secondary)">

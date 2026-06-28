@@ -1,9 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCheck, MapPin, MessageSquare, Play, Star } from "lucide-react";
+import { BadgeCheck, MapPin, MessageSquare, Share2, Star, Video } from "lucide-react";
 
 import type { FeaturedExpert } from "../experts.types";
-import { getIcon } from "./icons";
+import { FeaturedServicesSlider } from "./FeaturedServicesSlider";
 
 interface FeaturedExpertCardProps {
   expert: FeaturedExpert;
@@ -11,6 +13,26 @@ interface FeaturedExpertCardProps {
 
 export function FeaturedExpertCard({ expert }: FeaturedExpertCardProps) {
   const profileHref = `/specificexpert/${expert.id}`;
+
+  const handleShare = async () => {
+    const shareData = {
+      title: expert.name,
+      text: expert.tagline,
+      url:
+        typeof window !== "undefined"
+          ? `${window.location.origin}${profileHref}`
+          : profileHref,
+    };
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share(shareData);
+      } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareData.url);
+      }
+    } catch {
+      /* user cancelled or share unsupported */
+    }
+  };
 
   return (
     <section className="feature-card overflow-hidden rounded-[var(--radius-md)] p-4">
@@ -23,6 +45,14 @@ export function FeaturedExpertCard({ expert }: FeaturedExpertCardProps) {
             {expert.verified && (
               <BadgeCheck size={18} strokeWidth={1.8} className="shrink-0 text-(--brand-gold)" />
             )}
+            <button
+              type="button"
+              onClick={handleShare}
+              aria-label={`Share ${expert.name}'s profile`}
+              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-(--brand-gold) text-(--brand-gold) transition-colors hover:bg-(--bg-secondary)"
+            >
+              <Share2 size={10} strokeWidth={1.8} />
+            </button>
           </div>
 
           <div className="mt-1.5 flex items-center gap-2 text-xs text-(--text-secondary)">
@@ -57,31 +87,14 @@ export function FeaturedExpertCard({ expert }: FeaturedExpertCardProps) {
             sizes="(max-width: 640px) 40vw, 200px"
             className="object-cover"
           />
-          <span className="absolute inset-0 flex items-center justify-center bg-black/20">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-black/30 text-white backdrop-blur-sm">
-              <Play size={15} className="ml-0.5 fill-current" />
-            </span>
-          </span>
-          <span className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-medium text-white">
-            {expert.videoDuration}
+          <span className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm">
+            <Video size={12} strokeWidth={1.8} />
           </span>
         </Link>
       </div>
 
-      <div className="mt-4 grid grid-cols-6 gap-1">
-        {expert.services.map((service) => {
-          const Icon = getIcon(service.icon);
-          return (
-            <div key={service.id} className="flex flex-col items-center gap-1">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-(--border) bg-(--bg-card) text-(--accent-secondary)">
-                <Icon size={16} strokeWidth={1.7} />
-              </span>
-              <span className="w-full truncate text-center text-[8px] text-(--text-secondary)">
-                {service.label}
-              </span>
-            </div>
-          );
-        })}
+      <div className="mt-4">
+        <FeaturedServicesSlider services={expert.services} />
       </div>
 
       <div className="mt-4 flex items-center gap-2">
